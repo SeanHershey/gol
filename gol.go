@@ -36,6 +36,52 @@ type cellbuffer struct {
 	cy     map[int]bool
 }
 
+func (c *cellbuffer) singleCell(x, y int) {
+	// Number of surrounding cells
+	n := c.grid[x-1][y-1] +
+		c.grid[x-1][y+0] +
+		c.grid[x-1][y+1] +
+		c.grid[x+0][y-1] +
+		c.grid[x+0][y+1] +
+		c.grid[x+1][y-1] +
+		c.grid[x+1][y+0] +
+		c.grid[x+1][y+1]
+
+	switch {
+	case c.grid[x][y] == 0 && n == 3:
+		c.buffer[x][y] = 1
+	case n < 2 || n > 3:
+		c.buffer[x][y] = 0
+	default:
+		c.buffer[x][y] = c.grid[x][y]
+	}
+}
+
+func (c *cellbuffer) twoCell(x, y int) {
+	// Number of surrounding cells
+	n := c.grid[x-1][y-1] +
+		c.grid[x-1][y+0] +
+		c.grid[x-1][y+1] +
+		c.grid[x+0][y-1] +
+		c.grid[x+0][y+1] +
+		c.grid[x+1][y-1] +
+		c.grid[x+1][y+0] +
+		c.grid[x+1][y+1]
+
+	switch {
+	case c.grid[x][y] == 0 && n == 3:
+		c.buffer[x][y] = 1
+	case n < 2:
+		c.buffer[x][y] = 0
+	case c.grid[x][y] == 1 && n > 3:
+		c.buffer[x][y] = 2
+	case n > 3:
+		c.buffer[x][y] = 0
+	default:
+		c.buffer[x][y] = c.grid[x][y]
+	}
+}
+
 func (c *cellbuffer) update() {
 	for _y := range c.height - 2 {
 		for _x := range c.width - 2 {
@@ -46,29 +92,8 @@ func (c *cellbuffer) update() {
 			y := _y + 1
 			x := _x + 1
 			c.buffer[x][y] = 0
-
-			// Number of surrounding cells
-			n := c.grid[x-1][y-1] +
-				c.grid[x-1][y+0] +
-				c.grid[x-1][y+1] +
-				c.grid[x+0][y-1] +
-				c.grid[x+0][y+1] +
-				c.grid[x+1][y-1] +
-				c.grid[x+1][y+0] +
-				c.grid[x+1][y+1]
-
-			switch {
-			case c.grid[x][y] == 0 && n == 3:
-				c.buffer[x][y] = 1
-			case n < 2:
-				c.buffer[x][y] = 0
-			case c.grid[x][y] == 1 && n > 3:
-				c.buffer[x][y] = 2
-			case n > 3:
-				c.buffer[x][y] = 0
-			default:
-				c.buffer[x][y] = c.grid[x][y]
-			}
+			// c.singleCell(x, y)
+			c.twoCell(x, y)
 		}
 	}
 
@@ -120,11 +145,11 @@ func (c cellbuffer) String() string {
 			case 0:
 				b.WriteRune(' ')
 			case 1:
-				c, _ := colorful.Hex("#FF5733")
+				c, _ := colorful.Hex("#FFFFFF")
 				s := lipgloss.NewStyle().SetString(" ").Background(lipgloss.Color(c.Hex()))
 				b.WriteString(s.String())
 			case 2:
-				c, _ := colorful.Hex("#FFFFFF")
+				c, _ := colorful.Hex("#FF5733")
 				s := lipgloss.NewStyle().SetString(" ").Background(lipgloss.Color(c.Hex()))
 				b.WriteString(s.String())
 			default:
