@@ -19,6 +19,8 @@ func HelpBox() string {
 		"q Quit",
 		"b Blank canvas",
 		"r Random canvas",
+		"j Prev algo",
+		"k Next algo",
 		"[space] Pause",
 		"[click] toggle cell",
 	).Enumerator(list.Dash)

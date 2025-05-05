@@ -3,3 +3,4 @@
 - cli args
 - more update cycle options
 - change colors
+- show current algo

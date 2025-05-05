@@ -20,14 +20,14 @@ func (c *Core) HandleKeyMsg(msg tea.KeyMsg) tea.Cmd {
 	case "r":
 		c.Random()
 		return nil
-	case "J":
+	case "j":
 		if c.algoIndex == 0 {
 			c.algoIndex = NUM_ALGOS - 1
 			return nil
 		}
 		c.algoIndex = (c.algoIndex - 1) % NUM_ALGOS
 		return nil
-	case "K":
+	case "k":
 		c.algoIndex = (c.algoIndex + 1) % NUM_ALGOS
 		return nil
 	case "q":
