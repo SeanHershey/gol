@@ -1,5 +1,7 @@
 package core
 
+const NUM_ALGOS = 2
+
 func (c *Core) SingleCell(x, y int) {
 	// Number of surrounding cells
 	n := c.grid[x-1][y-1] +
@@ -45,4 +47,3 @@ func (c *Core) TwoCell(x, y int) {
 		c.buffer[x][y] = c.grid[x][y]
 	}
 }
-

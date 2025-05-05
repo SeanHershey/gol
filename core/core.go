@@ -13,13 +13,14 @@ import (
 )
 
 type Core struct {
-	grid     [][]uint8
-	buffer   [][]uint8
-	width    int
-	height   int
-	paused   bool
-	Fps      int
-	hideHelp bool
+	grid      [][]uint8
+	buffer    [][]uint8
+	width     int
+	height    int
+	paused    bool
+	Fps       int
+	hideHelp  bool
+	algoIndex int
 }
 
 type FrameMsg struct{}
@@ -62,8 +63,12 @@ func (c *Core) Update() {
 			y := _y + 1
 			x := _x + 1
 			c.buffer[x][y] = 0
-			c.SingleCell(x, y)
-			// c.TwoCell(x, y)
+			switch c.algoIndex {
+			case 1:
+				c.TwoCell(x, y)
+			default:
+				c.SingleCell(x, y)
+			}
 		}
 	}
 

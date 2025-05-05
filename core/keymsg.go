@@ -20,7 +20,19 @@ func (c *Core) HandleKeyMsg(msg tea.KeyMsg) tea.Cmd {
 	case "r":
 		c.Random()
 		return nil
-	default:
+	case "J":
+		if c.algoIndex == 0 {
+			c.algoIndex = NUM_ALGOS - 1
+			return nil
+		}
+		c.algoIndex = (c.algoIndex - 1) % NUM_ALGOS
+		return nil
+	case "K":
+		c.algoIndex = (c.algoIndex + 1) % NUM_ALGOS
+		return nil
+	case "q":
 		return tea.Quit
+	default:
+		return nil
 	}
 }
