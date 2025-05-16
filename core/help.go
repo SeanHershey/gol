@@ -21,6 +21,7 @@ func HelpBox() string {
 		"r Random canvas",
 		"j Prev algo",
 		"k Next algo",
+		"c Cycle colors",
 		"[space] Pause",
 		"[click] toggle cell",
 	).Enumerator(list.Dash)

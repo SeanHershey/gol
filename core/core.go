@@ -13,14 +13,15 @@ import (
 )
 
 type Core struct {
-	grid      [][]uint8
-	buffer    [][]uint8
-	width     int
-	height    int
-	paused    bool
-	Fps       int
-	hideHelp  bool
-	algoIndex int
+	grid       [][]uint8
+	buffer     [][]uint8
+	width      int
+	height     int
+	paused     bool
+	Fps        int
+	hideHelp   bool
+	algoIndex  int
+	colorIndex int
 }
 
 type FrameMsg struct{}
@@ -109,6 +110,9 @@ func (c Core) String() string {
 	var b strings.Builder
 	startBoxX := c.width - runewidth.StringWidth(removeColorFromString(hlines[0]))
 	endBoxY := len(hlines)
+	
+	colors := []string{"#FFFFFF", "#FF8156", "#7CC0FF", "#58E8B4", "#8FA0FE"}
+
 	for y := range c.height {
 		for x := range c.width {
 			if y < endBoxY && x >= startBoxX {
@@ -119,11 +123,11 @@ func (c Core) String() string {
 			case 0:
 				b.WriteRune(' ')
 			case 1:
-				c, _ := colorful.Hex("#FFFFFF")
+				c, _ := colorful.Hex(colors[c.colorIndex])
 				s := lipgloss.NewStyle().SetString(" ").Background(lipgloss.Color(c.Hex()))
 				b.WriteString(s.String())
 			case 2:
-				c, _ := colorful.Hex("#FF5733")
+				c, _ := colorful.Hex(colors[(c.colorIndex+1)%len(colors)])
 				s := lipgloss.NewStyle().SetString(" ").Background(lipgloss.Color(c.Hex()))
 				b.WriteString(s.String())
 			default:
